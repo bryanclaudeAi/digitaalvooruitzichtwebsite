@@ -140,10 +140,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div style={{ aspectRatio: '4/3', borderRadius: '14px', background: 'repeating-linear-gradient(135deg, #0B1220, #0B1220 11px, #0e1626 11px, #0e1626 22px)', border: '1px solid rgba(148,163,184,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-              {/* Swap this div for a screenshot of a client site when you have one */}
-              <span style={{ fontFamily: 'monospace', fontSize: '13px', letterSpacing: '0.04em', color: '#64748B' }}>[ screenshot van een klant-site ]</span>
-            </div>
+            <Image src="/van-dijk-demo.png" alt="Voorbeeld van een klantwebsite - Van Dijk Installatietechniek" width={1904} height={761} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid rgba(148,163,184,0.15)' }} />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '20px', marginTop: '20px' }}>
@@ -233,7 +230,7 @@ export default function Home() {
       <section id="over" style={{ background: '#020617', color: '#FFFFFF', fontFamily: 'var(--font-inter), sans-serif', padding: 'clamp(20px,4vw,40px) clamp(24px,6vw,80px) clamp(80px,12vw,150px)' }}>
         <div style={{ maxWidth: '1120px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 'clamp(36px,5vw,72px)', alignItems: 'center' }}>
           <div style={{ borderRadius: '18px', overflow: 'hidden', aspectRatio: '4/5', position: 'relative' }}>
-            <Image src="/bryan.png" alt="Bryan Schippers - Digitaal Vooruitzicht" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} sizes="(max-width: 768px) 100vw, 40vw" />
+            <Image src="/bryan-schippers.png" alt="Bryan Schippers - Digitaal Vooruitzicht" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} sizes="(max-width: 768px) 100vw, 40vw" />
           </div>
 
           <div>
