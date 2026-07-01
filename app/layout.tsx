@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat, Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const montserrat = Montserrat({
@@ -53,7 +54,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       </head>
-      <body style={{ fontFamily: 'var(--font-inter), sans-serif' }}>{children}</body>
+      <body style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }

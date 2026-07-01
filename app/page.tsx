@@ -414,7 +414,10 @@ export default function Home() {
             <svg width="26" height="26" viewBox="0 0 48 48" fill="none"><path d="M5 24 C13 13, 35 13, 43 24 C35 35, 13 35, 5 24 Z" stroke="#22D3EE" strokeWidth="3" fill="none" strokeLinejoin="round"/><circle cx="24" cy="24" r="6.5" fill="#22D3EE"/></svg>
             <span style={{ fontFamily: 'var(--font-montserrat), sans-serif', fontWeight: 700, fontSize: '15px' }}>Digitaal Vooruitzicht</span>
           </div>
-          <span style={{ fontSize: '13.5px', color: '#94A3B8' }}>&copy; 2026 Digitaal Vooruitzicht &middot; Almere</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <a href="/privacybeleid" style={{ fontSize: '13.5px', color: '#94A3B8', textDecoration: 'none' }} className="contact-link">Privacybeleid</a>
+            <span style={{ fontSize: '13.5px', color: '#94A3B8' }}>&copy; 2026 Digitaal Vooruitzicht &middot; Almere</span>
+          </div>
         </footer>
       </section>
 
