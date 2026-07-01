@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
 
+// Where contact submissions are delivered. Swap to info@digitaalvooruitzicht.nl
+// once that domain is verified in Resend.
 const CONTACT_EMAIL = 'bryanschippers.bs@gmail.com'
+// Until the real domain is verified in Resend, use their shared test sender.
+// After verifying digitaalvooruitzicht.nl, change to e.g. 'Digitaal Vooruitzicht <info@digitaalvooruitzicht.nl>'.
+const FROM_ADDRESS = 'Digitaal Vooruitzicht <onboarding@resend.dev>'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_LEN = 2000
@@ -21,6 +27,14 @@ function isRateLimited(ip: string): boolean {
   timestamps.push(now)
   submissionsByIp.set(ip, timestamps)
   return false
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 }
 
 export async function POST(req: NextRequest) {
@@ -52,36 +66,39 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
   }
 
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    return NextResponse.json({ ok: false, error: 'not_configured' }, { status: 500 })
+  }
+
+  const safeName = escapeHtml(name.trim())
+  const safeCompany = escapeHtml((company ?? '').trim())
+  const safeEmail = escapeHtml(email.trim())
+  const safeMessage = escapeHtml(message.trim()).replace(/\n/g, '<br>')
+
   try {
-    const origin = new URL(req.url).origin
-    const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        // FormSubmit rejects requests that don't look like they came from a real webpage.
-        Referer: `${origin}/`,
-        Origin: origin,
-      },
-      body: JSON.stringify({
-        name,
-        _replyto: email,
-        bedrijf: company ?? '',
-        bericht: message,
-        _subject: 'Nieuw contactverzoek - digitaalvooruitzicht.nl',
-        _captcha: 'false',
-      }),
+    const resend = new Resend(apiKey)
+    const { error } = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: CONTACT_EMAIL,
+      replyTo: email.trim(),
+      subject: `Nieuw contactverzoek - ${name.trim()}`,
+      text: `Naam: ${name.trim()}\nBedrijf: ${company ?? ''}\nE-mail: ${email.trim()}\n\nBericht:\n${message.trim()}`,
+      html: `
+        <h2>Nieuw contactverzoek via digitaalvooruitzicht.nl</h2>
+        <p><strong>Naam:</strong> ${safeName}</p>
+        <p><strong>Bedrijf:</strong> ${safeCompany || '-'}</p>
+        <p><strong>E-mail:</strong> ${safeEmail}</p>
+        <p><strong>Bericht:</strong><br>${safeMessage}</p>
+      `,
     })
 
-    const data = await res.json().catch(() => null)
-    // FormSubmit returns HTTP 200 even when it rejects a submission, so the
-    // actual outcome is only knowable from the "success" field in the body.
-    if (!res.ok || !data || String(data.success) !== 'true') {
-      return NextResponse.json({ ok: false, error: 'upstream_failed', detail: data?.message }, { status: 502 })
+    if (error) {
+      return NextResponse.json({ ok: false, error: 'send_failed', detail: error.message }, { status: 502 })
     }
 
     return NextResponse.json({ ok: true })
   } catch {
-    return NextResponse.json({ ok: false, error: 'upstream_failed' }, { status: 502 })
+    return NextResponse.json({ ok: false, error: 'send_failed' }, { status: 502 })
   }
 }
