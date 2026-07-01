@@ -284,7 +284,7 @@ export default function Home() {
       <section id="over" style={{ background: '#020617', color: '#FFFFFF', fontFamily: 'var(--font-inter), sans-serif', padding: 'clamp(20px,4vw,40px) clamp(24px,6vw,80px) clamp(80px,12vw,150px)' }}>
         <div style={{ maxWidth: '1120px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 'clamp(36px,5vw,72px)', alignItems: 'center' }}>
           <div style={{ borderRadius: '18px', overflow: 'hidden', aspectRatio: '4/5', position: 'relative' }}>
-            <Image src="/bryan-schippers.png" alt="Bryan Schippers - Digitaal Vooruitzicht" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} sizes="(max-width: 768px) 100vw, 40vw" />
+            <Image src="/bryan-schippers.jpg" alt="Bryan Schippers - Digitaal Vooruitzicht" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} sizes="(max-width: 768px) 100vw, 40vw" />
           </div>
 
           <div>
