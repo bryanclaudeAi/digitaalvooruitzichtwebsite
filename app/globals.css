@@ -1,0 +1,69 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; padding: 0; }
+section[id] { scroll-margin-top: 24px; }
+body { background: #020617; }
+::selection { background: #22D3EE; color: #020617; }
+
+@keyframes dv-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+/* Card hover */
+.card {
+  transition: transform .32s cubic-bezier(.2,.8,.25,1), box-shadow .32s ease, border-color .32s ease;
+}
+.card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 22px 55px -12px rgba(34,211,238,0.28);
+  border-color: rgba(34,211,238,0.4) !important;
+}
+
+/* Featured (main dienst) card */
+.card-featured {
+  transition: transform .32s cubic-bezier(.2,.8,.25,1), box-shadow .32s ease, border-color .32s ease;
+}
+.card-featured:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 26px 65px -12px rgba(34,211,238,0.3);
+  border-color: rgba(34,211,238,0.55) !important;
+}
+
+/* Buttons */
+.btn-primary:hover {
+  background: #67E8F9 !important;
+  box-shadow: 0 14px 48px rgba(34,211,238,0.4) !important;
+}
+.btn-secondary:hover {
+  border-color: rgba(148,163,184,0.5) !important;
+}
+.btn-nav:hover {
+  border-color: #22D3EE !important;
+  color: #22D3EE !important;
+}
+.btn-submit:hover {
+  background: #67E8F9 !important;
+}
+.btn-fab:hover {
+  background: #67E8F9 !important;
+}
+
+/* Contact links */
+.contact-link:hover {
+  color: #22D3EE !important;
+}
+
+/* FAB pills */
+.fab-pill-wa:hover {
+  border-color: #22D3EE !important;
+}
+.fab-pill-cta:hover {
+  background: #67E8F9 !important;
+}
+
+/* Form inputs */
+.form-input:focus {
+  border-color: #22D3EE !important;
+  outline: none;
+}
