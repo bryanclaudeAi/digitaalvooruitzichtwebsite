@@ -325,11 +325,11 @@ export default function Home() {
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '36px' }}>
-              <a href="mailto:info@digitaalvooruitzicht.nl" className="contact-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '13px', color: '#FFFFFF', textDecoration: 'none', fontSize: '15.5px', fontWeight: 500, transition: 'color .2s' }}>
+              <a href="mailto:bryanschippers.bs@gmail.com" className="contact-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '13px', color: '#FFFFFF', textDecoration: 'none', fontSize: '15.5px', fontWeight: 500, transition: 'color .2s' }}>
                 <span style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(34,211,238,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
                 </span>
-                info@digitaalvooruitzicht.nl
+                bryanschippers.bs@gmail.com
               </a>
               <a href="tel:+31621484093" className="contact-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '13px', color: '#FFFFFF', textDecoration: 'none', fontSize: '15.5px', fontWeight: 500, transition: 'color .2s' }}>
                 <span style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(34,211,238,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
