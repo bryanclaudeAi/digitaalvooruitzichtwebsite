@@ -20,7 +20,7 @@ export default function Privacybeleid() {
 
         <section style={sectionStyle}>
           <h2 style={h2Style}>Wie zijn wij</h2>
-          <p style={pStyle}>Digitaal Vooruitzicht (Bryan Schippers), gevestigd in Almere, KvK-nummer 42093547, is verantwoordelijk voor de verwerking van persoonsgegevens zoals beschreven in dit privacybeleid.</p>
+          <p style={pStyle}>Digitaal Vooruitzicht (Bryan Schippers), gevestigd in Almere, KvK-nummer 42093547, BTW-nummer NL005489023B93, is verantwoordelijk voor de verwerking van persoonsgegevens zoals beschreven in dit privacybeleid.</p>
         </section>
 
         <section style={sectionStyle}>
