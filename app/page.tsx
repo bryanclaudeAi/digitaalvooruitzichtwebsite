@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 
 export default function Home() {
@@ -13,6 +13,55 @@ export default function Home() {
   const [sending, setSending] = useState(false)
   const [error, setError] = useState(false)
   const [fabOpen, setFabOpen] = useState(false)
+
+  // Demo-screenshot zoom lightbox: animates the image from its spot to an enlarged, centered view.
+  const demoRef = useRef<HTMLDivElement>(null)
+  const [zoomMounted, setZoomMounted] = useState(false)
+  const [zoomCentered, setZoomCentered] = useState(false)
+  type Box = { top: number; left: number; width: number; height: number }
+  const [thumbBox, setThumbBox] = useState<Box | null>(null)
+  const [centerBox, setCenterBox] = useState<Box | null>(null)
+
+  const openZoom = () => {
+    const el = demoRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+    const ratio = 1904 / 761
+    let w = Math.min(vw * 0.92, 1100)
+    let h = w / ratio
+    if (h > vh * 0.9) {
+      h = vh * 0.9
+      w = h * ratio
+    }
+    setThumbBox({ top: r.top, left: r.left, width: r.width, height: r.height })
+    setCenterBox({ top: (vh - h) / 2, left: (vw - w) / 2, width: w, height: h })
+    setZoomMounted(true)
+    requestAnimationFrame(() => requestAnimationFrame(() => setZoomCentered(true)))
+  }
+
+  const closeZoom = () => {
+    setZoomCentered(false)
+    window.setTimeout(() => {
+      setZoomMounted(false)
+      setThumbBox(null)
+      setCenterBox(null)
+    }, 360)
+  }
+
+  useEffect(() => {
+    if (!zoomMounted) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeZoom()
+    }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [zoomMounted])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -140,7 +189,12 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <Image src="/van-dijk-demo.png" alt="Voorbeeld van een klantwebsite - Van Dijk Installatietechniek" width={1904} height={761} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid rgba(148,163,184,0.15)' }} />
+            <div ref={demoRef} style={{ position: 'relative', lineHeight: 0 }}>
+              <Image src="/van-dijk-demo.png" alt="Voorbeeld van een klantwebsite - Van Dijk Installatietechniek" width={1904} height={761} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid rgba(148,163,184,0.15)' }} />
+              <button onClick={openZoom} aria-label="Bekijk de demo vergroot" className="btn-zoom" style={{ position: 'absolute', right: '12px', bottom: '12px', width: '42px', height: '42px', borderRadius: '50%', border: 'none', background: '#22D3EE', color: '#020617', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 6px 20px rgba(2,6,23,0.5)', transition: 'transform .2s, background .2s' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#020617" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '20px', marginTop: '20px' }}>
@@ -363,6 +417,40 @@ export default function Home() {
           <span style={{ fontSize: '13.5px', color: '#94A3B8' }}>&copy; 2026 Digitaal Vooruitzicht &middot; Almere</span>
         </footer>
       </section>
+
+      {/* ─── DEMO ZOOM LIGHTBOX ─── */}
+      {zoomMounted && thumbBox && centerBox && (
+        <div
+          onClick={closeZoom}
+          style={{ position: 'fixed', inset: 0, zIndex: 100, background: zoomCentered ? 'rgba(2,6,23,0.9)' : 'rgba(2,6,23,0)', transition: 'background 360ms cubic-bezier(.2,.8,.25,1)', cursor: 'zoom-out' }}
+        >
+          <img
+            src="/van-dijk-demo.png"
+            alt="Voorbeeld van een klantwebsite - Van Dijk Installatietechniek"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'fixed',
+              top: (zoomCentered ? centerBox : thumbBox).top,
+              left: (zoomCentered ? centerBox : thumbBox).left,
+              width: (zoomCentered ? centerBox : thumbBox).width,
+              height: (zoomCentered ? centerBox : thumbBox).height,
+              margin: 0,
+              borderRadius: '14px',
+              border: '1px solid rgba(148,163,184,0.25)',
+              boxShadow: '0 30px 90px rgba(0,0,0,0.65)',
+              transition: 'top 360ms cubic-bezier(.2,.8,.25,1), left 360ms cubic-bezier(.2,.8,.25,1), width 360ms cubic-bezier(.2,.8,.25,1), height 360ms cubic-bezier(.2,.8,.25,1)',
+              cursor: 'default',
+            }}
+          />
+          <button
+            onClick={closeZoom}
+            aria-label="Sluiten"
+            style={{ position: 'fixed', top: '20px', right: '20px', width: '44px', height: '44px', borderRadius: '50%', border: 'none', background: 'rgba(15,23,42,0.92)', color: '#FFFFFF', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: zoomCentered ? 1 : 0, transition: 'opacity 360ms ease', zIndex: 101 }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      )}
 
       {/* ─── FLOATING FAB ─── */}
       <div style={{ position: 'fixed', right: 'clamp(18px,3vw,32px)', bottom: 'clamp(18px,3vw,32px)', zIndex: 60, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '14px', fontFamily: 'var(--font-inter), sans-serif' }}>

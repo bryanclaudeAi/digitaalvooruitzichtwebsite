@@ -48,6 +48,10 @@ body { background: #020617; }
 .btn-fab:hover {
   background: #67E8F9 !important;
 }
+.btn-zoom:hover {
+  background: #67E8F9 !important;
+  transform: scale(1.08);
+}
 
 /* Contact links */
 .contact-link:hover {
